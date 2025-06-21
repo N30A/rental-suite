@@ -23,6 +23,24 @@ public static class CustomerQueries
         ORDER BY c.id;
     """;
     
+    public const string GetIndividualById = """
+        SELECT
+            c.id, c.customer_number, c.email, c.phone, c.address, c.postal_code,
+            c.city, c.is_active, i.first_name, i.last_name
+        FROM customers c
+        JOIN individuals i ON c.id = i.customer_id
+        WHERE c.id = @Id;
+    """;
+    
+    public const string GetIndividualByCustomerNumber = """
+        SELECT
+            c.id, c.customer_number, c.email, c.phone, c.address, c.postal_code,
+            c.city, c.is_active, i.first_name, i.last_name
+        FROM customers c
+        JOIN individuals i ON c.id = i.customer_id
+        WHERE c.customer_number = @CustomerNumber;
+    """;
+    
     public const string GetCompanies = """
         SELECT
             c.id, c.customer_number, c.email, c.phone, c.address, c.postal_code,
@@ -42,5 +60,23 @@ public static class CustomerQueries
         OR co.name ILIKE CONCAT('%', @search, '%')
         OR c.full_address ILIKE CONCAT('%', @search, '%')
         ORDER BY c.id;
+    """;
+    
+    public const string GetCompanyById = """
+        SELECT
+            c.id, c.customer_number, c.email, c.phone, c.address, c.postal_code,
+            c.city, c.is_active, co.name, co.org_number
+        FROM customers c
+        JOIN companies co ON c.id = co.customer_id
+        WHERE c.id = @Id;
+    """;
+    
+    public const string GetCompanyByCustomerNumber = """
+        SELECT
+            c.id, c.customer_number, c.email, c.phone, c.address, c.postal_code,
+            c.city, c.is_active, co.name, co.org_number
+        FROM customers c
+        JOIN companies co ON c.id = co.customer_id
+        WHERE c.customer_number = @CustomerNumber;
     """;
 }
