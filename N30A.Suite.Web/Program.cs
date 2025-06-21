@@ -1,5 +1,10 @@
+using N30A.Suite.Web.Configurations;
+
 var builder = WebApplication.CreateBuilder(args);
 
+DotNetEnv.Env.Load("../.env");
+
+builder.Services.AddDatabase();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
