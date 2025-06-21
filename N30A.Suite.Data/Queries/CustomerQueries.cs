@@ -1,6 +1,6 @@
 namespace N30A.Suite.Data.Queries;
 
-public class CustomerQueries
+public static class CustomerQueries
 {
     public const string GetIndividuals = """
         SELECT
