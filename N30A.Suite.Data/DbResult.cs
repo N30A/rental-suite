@@ -18,7 +18,7 @@ public sealed class DbResult<T>
         return new DbResult<T>(true, data, null);
     }
 
-    public static DbResult<T> Failure(Exception exception, T? data = default) 
+    public static DbResult<T> Failure(T? data = default, Exception? exception = null) 
     {
         return new DbResult<T>(false, data, exception);
     }
