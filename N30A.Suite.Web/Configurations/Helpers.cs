@@ -26,14 +26,7 @@ public static class Helpers
     
     public static void TryConnection(string connectionString)
     {
-        try
-        {   
-            using var connection = new NpgsqlConnection(connectionString);
-            connection.Open();
-        }
-        catch (Exception ex)
-        {  
-            throw new InvalidOperationException($"Could not connect to database '{connectionString}'.", ex);
-        }
+        using var connection = new NpgsqlConnection(connectionString);
+        connection.Open();
     }
 }
