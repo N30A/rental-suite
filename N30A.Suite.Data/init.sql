@@ -1,20 +1,24 @@
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
+CREATE SEQUENCE IF NOT EXISTS customer_number_seq START 100001;
 CREATE TABLE IF NOT EXISTS customers (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    customer_number TEXT UNIQUE DEFAULT CONCAT('K', NEXTVAL('customer_number_seq')::TEXT),
     email TEXT,
     phone TEXT,
     address TEXT,
     postal_code TEXT,
     city TEXT,
+    full_address TEXT GENERATED ALWAYS AS (
+        COALESCE(address, '') || COALESCE(postal_code, '') || COALESCE(city, '')
+    ) STORED,
     is_active BOOL DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_customers_address_trgm ON customers USING GIN(address gin_trgm_ops);
-CREATE INDEX IF NOT EXISTS idx_customers_postal_code ON customers(postal_code);
-CREATE INDEX IF NOT EXISTS idx_customers_city ON customers(city);
+CREATE INDEX IF NOT EXISTS idx_customers_customers_number ON customers(customer_number);
+CREATE INDEX IF NOT EXISTS idx_customers_full_address_trgm ON customers USING GIN(full_address gin_trgm_ops);
 CREATE INDEX IF NOT EXISTS idx_customers_is_active ON customers(is_active);
 
 CREATE OR REPLACE FUNCTION fun_customers_updated_at()
